@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-
 	var (
 		firstOperand, secondOperand int
 		operator                    string
@@ -21,10 +20,9 @@ func main() {
 		fmt.Println("Invalid second operand")
 		return
 	}
-	fmt.Scan(&operator)
+	_, _ = fmt.Scan(&operator)
 
 	switch operator {
-
 	case "+":
 		fmt.Println(firstOperand + secondOperand)
 	case "-":
@@ -39,6 +37,5 @@ func main() {
 		fmt.Println(firstOperand / secondOperand)
 	default:
 		fmt.Println("Invalid operation")
-
 	}
 }
