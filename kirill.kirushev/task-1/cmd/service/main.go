@@ -21,7 +21,7 @@ func main() {
 		fmt.Println("Invalid operation")
 		return
 	}
-	
+
 	var result int
 
 	switch operation {
