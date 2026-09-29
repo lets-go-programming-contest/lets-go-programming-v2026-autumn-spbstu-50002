@@ -1,3 +1,3 @@
-module github.com/shokerchannel2007-stack/task-1
+module github.com/gleblv3011-commits/task-1
 
 go 1.22

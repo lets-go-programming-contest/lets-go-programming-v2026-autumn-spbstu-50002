@@ -6,39 +6,49 @@ import (
 )
 
 func main() {
-	var a, b, c string
-	if _, err := fmt.Scan(&a); err != nil {
+	var operand1, operand2, operator string
+
+	if _, err := fmt.Scan(&operand1); err != nil {
+		fmt.Println("Error reading first operand:", err)
 		return
 	}
-	if _, err := fmt.Scan(&b); err != nil {
-		return
-	}
-	if _, err := fmt.Scan(&c); err != nil {
-		return
-	}
-	numA, errA := strconv.Atoi(a)
-	if errA != nil {
+
+	num1, err := strconv.Atoi(operand1)
+	if err != nil {
 		fmt.Println("Invalid first operand")
 		return
 	}
-	numB, errB := strconv.Atoi(b)
-	if errB != nil {
+
+	if _, err := fmt.Scan(&operand2); err != nil {
+		fmt.Println("Error reading second operand:", err)
+		return
+	}
+
+	num2, err := strconv.Atoi(operand2)
+	if err != nil {
 		fmt.Println("Invalid second operand")
 		return
 	}
-	if c == "+" {
-		fmt.Println(numA + numB)
-	} else if c == "-" {
-		fmt.Println(numA - numB)
-	} else if c == "*" {
-		fmt.Println(numA * numB)
-	} else if c == "/" {
-		if numB == 0 {
+
+	if _, err := fmt.Scan(&operator); err != nil {
+		fmt.Println("Error reading operator:", err)
+		return
+	}
+
+	switch operator {
+	case "+":
+		fmt.Println(num1 + num2)
+	case "-":
+		fmt.Println(num1 - num2)
+	case "*":
+		fmt.Println(num1 * num2)
+	case "/":
+		if num2 == 0 {
 			fmt.Println("Division by zero")
 		} else {
-			fmt.Println(numA / numB)
+			fmt.Println(num1 / num2)
 		}
-	} else {
+	default:
 		fmt.Println("Invalid operation")
 	}
 }
