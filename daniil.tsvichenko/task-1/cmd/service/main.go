@@ -9,6 +9,6 @@ func main() {
 	log.SetFlags(0)
 	err := calculator.Start()
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Println(err)
 	}
 }
