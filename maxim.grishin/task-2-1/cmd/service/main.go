@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -8,6 +9,12 @@ type Bound struct {
 	min int
 	max int
 }
+
+var (
+	errorOutOfRange         = errors.New("out of range")
+	errorInvalidSign        = errors.New("invalid sign")
+	errorInvalidTemperature = errors.New("invalid temperature")
+)
 
 const (
 	minN int = 1
@@ -18,50 +25,53 @@ const (
 )
 
 func readNumber() (int, error) {
-	var n int
+	var number int
 
-	if _, err := fmt.Scan(&n); err != nil {
-		return 0, err
+	if _, err := fmt.Scan(&number); err != nil {
+		return 0, fmt.Errorf("failed to scan number: %w", err)
 	}
 
-	if n < minN || n > maxN {
-		return 0, fmt.Errorf("out of range")
+	if number < minN || number > maxN {
+		return 0, errorOutOfRange
 	}
 
-	return n, nil
+	return number, nil
 }
 
 func readBound() (string, int, error) {
-	var sign string
-	var temp int
+	var (
+		sign        string
+		temperature int
+	)
 
-	if _, err := fmt.Scan(&sign, &temp); err != nil {
-		return "", 0, err
+	if _, err := fmt.Scan(&sign, &temperature); err != nil {
+		return "", 0, fmt.Errorf("failed to scan bound: %w", err)
 	}
 
 	if sign != ">=" && sign != "<=" {
-		return "", 0, fmt.Errorf("invalid sign")
+		return "", 0, errorInvalidSign
 	}
 
-	if temp < fixedMinTemp || temp > fixedMaxTemp {
-		return "", 0, fmt.Errorf("invalid temperature")
+	if temperature < fixedMinTemp || temperature > fixedMaxTemp {
+		return "", 0, errorInvalidTemperature
 	}
 
-	return sign, temp, nil
+	return sign, temperature, nil
 }
 
 func processDepartment(bounds *Bound, numberOfEmployees int) {
 	for range numberOfEmployees {
-		sign, temp, err := readBound()
+		sign, temperature, err := readBound()
 		if err != nil {
 			fmt.Println(-1)
+
 			continue
 		}
 
 		if sign == ">=" {
-			bounds.min = max(temp, bounds.min)
+			bounds.min = max(temperature, bounds.min)
 		} else if sign == "<=" {
-			bounds.max = min(temp, bounds.max)
+			bounds.max = min(temperature, bounds.max)
 		}
 
 		if bounds.min > bounds.max {
