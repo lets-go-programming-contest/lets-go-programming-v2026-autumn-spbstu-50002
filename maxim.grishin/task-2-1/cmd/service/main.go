@@ -9,53 +9,82 @@ type Bound struct {
 	max int
 }
 
+const (
+	minN int = 1
+	maxN int = 1000
+
+	fixedMinTemp int = 15
+	fixedMaxTemp int = 30
+)
+
+func readNumber() (int, error) {
+	var n int
+
+	if _, err := fmt.Scan(&n); err != nil {
+		return 0, err
+	}
+
+	if n < minN || n > maxN {
+		return 0, fmt.Errorf("out of range")
+	}
+
+	return n, nil
+}
+
+func readBound() (string, int, error) {
+	var sign string
+	var temp int
+
+	if _, err := fmt.Scan(&sign, &temp); err != nil {
+		return "", 0, err
+	}
+
+	if sign != ">=" && sign != "<=" {
+		return "", 0, fmt.Errorf("invalid sign")
+	}
+
+	if temp < fixedMinTemp || temp > fixedMaxTemp {
+		return "", 0, fmt.Errorf("invalid temperature")
+	}
+
+	return sign, temp, nil
+}
+
+func processDepartment(bounds *Bound, numberOfEmployees int) {
+	for range numberOfEmployees {
+		sign, temp, err := readBound()
+		if err != nil {
+			fmt.Println(-1)
+			continue
+		}
+
+		if sign == ">=" {
+			bounds.min = max(temp, bounds.min)
+		} else if sign == "<=" {
+			bounds.max = min(temp, bounds.max)
+		}
+
+		if bounds.min > bounds.max {
+			fmt.Println(-1)
+		} else {
+			fmt.Println(bounds.min)
+		}
+	}
+}
+
 func main() {
-	var (
-		numberOfDepartments, numberOfEmployees int
-	)
-	_, err := fmt.Scan(&numberOfDepartments)
-	if err != nil || numberOfDepartments < 1 || numberOfDepartments > 1000 {
+	numberOfDepartments, err := readNumber()
+	if err != nil {
 		return
 	}
 
-	for i := 0; i < numberOfDepartments; i++ {
-		_, err = fmt.Scan(&numberOfEmployees)
-		if err != nil || numberOfEmployees < 1 || numberOfEmployees > 1000 {
+	for range numberOfDepartments {
+		numberOfEmployees, err := readNumber()
+		if err != nil {
 			return
 		}
 
-		departmentBounds := Bound{min: 15, max: 30}
-		for j := 0; j < numberOfEmployees; j++ {
-			var (
-				sign        string
-				temperature int
-			)
-
-			_, err = fmt.Scan(&sign)
-			if err != nil || (sign != ">=" && sign != "<=") {
-				return
-			}
-
-			_, err = fmt.Scan(&temperature)
-			if err != nil || temperature < 15 || temperature > 30 {
-				return
-			}
-
-			if sign == ">=" {
-				departmentBounds.min = max(temperature, departmentBounds.min)
-			} else {
-				departmentBounds.max = min(temperature, departmentBounds.max)
-			}
-
-			var result int
-
-			if departmentBounds.min > departmentBounds.max {
-				result = -1
-			} else {
-				result = departmentBounds.min
-			}
-
-			fmt.Println(result)
-		}
+		departmentBounds := Bound{min: fixedMinTemp, max: fixedMaxTemp}
+		processDepartment(&departmentBounds, numberOfEmployees)
 	}
 }
