@@ -11,9 +11,9 @@ type Bound struct {
 }
 
 var (
-	errorOutOfRange         = errors.New("out of range")
-	errorInvalidSign        = errors.New("invalid sign")
-	errorInvalidTemperature = errors.New("invalid temperature")
+	errOutOfRange         = errors.New("out of range")
+	errInvalidSign        = errors.New("invalid sign")
+	errInvalidTemperature = errors.New("invalid temperature")
 )
 
 const (
@@ -32,7 +32,7 @@ func readNumber() (int, error) {
 	}
 
 	if number < minN || number > maxN {
-		return 0, errorOutOfRange
+		return 0, errOutOfRange
 	}
 
 	return number, nil
@@ -49,11 +49,11 @@ func readBound() (string, int, error) {
 	}
 
 	if sign != ">=" && sign != "<=" {
-		return "", 0, errorInvalidSign
+		return "", 0, errInvalidSign
 	}
 
 	if temperature < fixedMinTemp || temperature > fixedMaxTemp {
-		return "", 0, errorInvalidTemperature
+		return "", 0, errInvalidTemperature
 	}
 
 	return sign, temperature, nil
