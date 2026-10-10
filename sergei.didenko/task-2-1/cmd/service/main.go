@@ -19,14 +19,15 @@ func main() {
 		}
 
 		for range employees {
-			var op string
+			var operator string
+
 			var tempEmp int
 
-			if _, err := fmt.Scan(&op, &tempEmp); err != nil {
+			if _, err := fmt.Scan(&operator, &tempEmp); err != nil {
 				return
 			}
 
-			switch op {
+			switch operator {
 			case ">=":
 				if tempEmp > minTemp {
 					minTemp = tempEmp
