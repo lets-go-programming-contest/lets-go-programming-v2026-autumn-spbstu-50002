@@ -3,9 +3,7 @@ package main
 import "fmt"
 
 func main() {
-
 	var departments int
-
 	fmt.Scan(&departments)
 
 	for i := 0; i < departments; i++ {
@@ -14,17 +12,19 @@ func main() {
 
 		var employees int
 		fmt.Scan(&employees)
+
 		for j := 0; j < employees; j++ {
 			var op string
 			var tempEmp int
 			fmt.Scan(&op, &tempEmp)
 
-			if op == ">=" {
-				if tempEmp >= minTemp {
+			switch op {
+			case ">=":
+				if tempEmp > minTemp {
 					minTemp = tempEmp
 				}
-			} else if op == "<=" {
-				if tempEmp <= maxTemp {
+			case "<=":
+				if tempEmp < maxTemp {
 					maxTemp = tempEmp
 				}
 			}
