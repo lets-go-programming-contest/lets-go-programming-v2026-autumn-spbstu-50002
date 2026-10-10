@@ -4,16 +4,22 @@ import (
 	"fmt"
 )
 
+const (
+	defaultMinTemperature = 15
+	defaultMaxTemperature = 30
+)
+
 type Department struct {
 	min int
 	max int
 }
 
 func NewDepartment() Department {
-	return Department{min: 15, max: 30}
+	return Department{min: defaultMinTemperature, max: defaultMaxTemperature}
 }
 
 func (d *Department) AddTemperature(sign string, temp int) int {
+
 	if sign == ">=" {
 		if temp > d.min {
 			d.min = temp
@@ -23,9 +29,11 @@ func (d *Department) AddTemperature(sign string, temp int) int {
 			d.max = temp
 		}
 	}
+
 	if d.min > d.max {
 		return -1
 	}
+
 	return d.min
 }
 
