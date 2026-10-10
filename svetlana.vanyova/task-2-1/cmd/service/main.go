@@ -19,7 +19,6 @@ func NewDepartment() Department {
 }
 
 func (d *Department) AddTemperature(sign string, temp int) int {
-
 	if sign == ">=" {
 		if temp > d.min {
 			d.min = temp
