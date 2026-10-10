@@ -4,19 +4,27 @@ import "fmt"
 
 func main() {
 	var departments int
-	fmt.Scan(&departments)
 
-	for i := 0; i < departments; i++ {
+	if _, err := fmt.Scan(&departments); err != nil {
+		return
+	}
+
+	for range departments {
 		minTemp := 15
 		maxTemp := 30
 
 		var employees int
-		fmt.Scan(&employees)
+		if _, err := fmt.Scan(&employees); err != nil {
+			return
+		}
 
-		for j := 0; j < employees; j++ {
+		for range employees {
 			var op string
 			var tempEmp int
-			fmt.Scan(&op, &tempEmp)
+
+			if _, err := fmt.Scan(&op, &tempEmp); err != nil {
+				return
+			}
 
 			switch op {
 			case ">=":
@@ -34,7 +42,6 @@ func main() {
 			} else {
 				fmt.Println(-1)
 			}
-
 		}
 	}
 }
