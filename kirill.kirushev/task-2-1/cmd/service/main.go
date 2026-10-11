@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	minCount int = 1
@@ -8,6 +11,12 @@ const (
 
 	minDepartmentTemp = 15
 	maxDepartmentTemp = 30
+)
+
+var (
+	errInvalidNumber      = errors.New("invalid number")
+	errInvalidOperator    = errors.New("invalid operator")
+	errInvalidTemperature = errors.New("invalid temperature")
 )
 
 func readAndCheckNumber() (int, error) {
@@ -18,7 +27,7 @@ func readAndCheckNumber() (int, error) {
 	}
 
 	if number < minCount || number > maxCount {
-		return 0, fmt.Errorf("number must be between %d and %d", minCount, maxCount)
+		return 0, fmt.Errorf("%w: must be between %d and %d", errInvalidNumber, minCount, maxCount)
 	}
 
 	return number, nil
@@ -35,7 +44,7 @@ func readAndCheckConstraint() (string, int, error) {
 	}
 
 	if operator != ">=" && operator != "<=" {
-		return "", 0, fmt.Errorf("invalid operator \"%s\"", operator)
+		return "", 0, fmt.Errorf("%w: %q", errInvalidOperator, operator)
 	}
 
 	if _, err := fmt.Scan(&temp); err != nil {
@@ -44,7 +53,8 @@ func readAndCheckConstraint() (string, int, error) {
 
 	if temp < minDepartmentTemp || temp > maxDepartmentTemp {
 		return "", 0, fmt.Errorf(
-			"temperature must be between %d and %d",
+			"%w: must be between %d and %d",
+			errInvalidTemperature,
 			minDepartmentTemp,
 			maxDepartmentTemp,
 		)
@@ -73,22 +83,25 @@ func processEmployeeConstraints(department *Department, numberOfEmployees int) e
 }
 
 func main() {
-	N, err := readAndCheckNumber()
+	numberOfDepartments, err := readAndCheckNumber()
 	if err != nil {
 		fmt.Println(err)
+
 		return
 	}
 
-	for range N {
-		K, err := readAndCheckNumber()
+	for range numberOfDepartments {
+		numberOfEmployees, err := readAndCheckNumber()
 		if err != nil {
 			fmt.Println(err)
+
 			return
 		}
 
 		department := NewDepartment(minDepartmentTemp, maxDepartmentTemp)
-		if err := processEmployeeConstraints(department, K); err != nil {
+		if err := processEmployeeConstraints(department, numberOfEmployees); err != nil {
 			fmt.Println(err)
+
 			return
 		}
 	}
