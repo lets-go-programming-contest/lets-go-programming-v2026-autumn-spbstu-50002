@@ -54,6 +54,7 @@ func processDepartment() bool {
 
 func processEmployee(minTemp, maxTemp int) (int, int, bool) {
 	var operator string
+
 	var tempEmp int
 
 	if _, err := fmt.Scan(&operator, &tempEmp); err != nil {
