@@ -59,13 +59,13 @@ func readBound() (string, int, error) {
 	return sign, temperature, nil
 }
 
-func processDepartment(bounds *Bound, numberOfEmployees int) {
+func processDepartment(bounds *Bound, numberOfEmployees int) error {
 	for range numberOfEmployees {
 		sign, temperature, err := readBound()
 		if err != nil {
 			fmt.Println(-1)
 
-			continue
+			return nil
 		}
 
 		if sign == ">=" {
@@ -76,25 +76,34 @@ func processDepartment(bounds *Bound, numberOfEmployees int) {
 
 		if bounds.min > bounds.max {
 			fmt.Println(-1)
+
+			return nil
 		} else {
 			fmt.Println(bounds.min)
 		}
 	}
+	return nil
 }
 
 func main() {
 	numberOfDepartments, err := readNumber()
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
 	for range numberOfDepartments {
 		numberOfEmployees, err := readNumber()
 		if err != nil {
+			fmt.Println(err)
 			return
 		}
 
 		departmentBounds := Bound{min: fixedMinTemp, max: fixedMaxTemp}
-		processDepartment(&departmentBounds, numberOfEmployees)
+		err = processDepartment(&departmentBounds, numberOfEmployees)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
 }
