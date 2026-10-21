@@ -94,7 +94,6 @@ func main() {
 
 	for range numberOfDepartments {
 		numberOfEmployees, err := readNumber()
-
 		if err != nil {
 			fmt.Println(err)
 
@@ -103,7 +102,6 @@ func main() {
 
 		departmentBounds := Bound{min: fixedMinTemp, max: fixedMaxTemp}
 		err = processDepartment(&departmentBounds, numberOfEmployees)
-
 		if err != nil {
 			fmt.Println(err)
 
