@@ -101,8 +101,8 @@ func main() {
 		}
 
 		departmentBounds := Bound{min: fixedMinTemp, max: fixedMaxTemp}
-		err = processDepartment(&departmentBounds, numberOfEmployees)
-		if err != nil {
+
+		if err = processDepartment(&departmentBounds, numberOfEmployees); err != nil {
 			fmt.Println(err)
 
 			return
