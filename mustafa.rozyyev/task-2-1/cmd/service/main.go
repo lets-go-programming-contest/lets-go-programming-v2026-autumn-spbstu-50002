@@ -44,6 +44,7 @@ func readInput() ([][]temperatureConstraint, error) {
 	}
 
 	departments := make([][]temperatureConstraint, departmentCount)
+
 	for departmentIndex := range departmentCount {
 		employeeCount, err := readAndCheckCount()
 		if err != nil {
@@ -51,6 +52,7 @@ func readInput() ([][]temperatureConstraint, error) {
 		}
 
 		departments[departmentIndex] = make([]temperatureConstraint, employeeCount)
+
 		for employeeIndex := range employeeCount {
 			var constraint temperatureConstraint
 			if _, err := fmt.Scan(&constraint.operator, &constraint.temperature); err != nil {
