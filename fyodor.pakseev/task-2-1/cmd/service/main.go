@@ -9,7 +9,7 @@ const (
 	defMaxTemp = 30
 )
 
-func addTemp(operation string, value int, maxTemp, minTemp int) (int, int) {
+func addTemp(operation string, value int, minTemp, maxTemp int) (int, int) {
 	switch operation {
 	case "<=":
 		if value < maxTemp {
@@ -26,16 +26,15 @@ func addTemp(operation string, value int, maxTemp, minTemp int) (int, int) {
 
 func main() {
 	var departs int
-	_, err := fmt.Scan(&departs)
-	if err != nil {
+
+	if _, err := fmt.Scan(&departs); err != nil {
 		return
 	}
 
 	for range departs {
 		var numStaff int
 
-		_, err := fmt.Scan(&numStaff)
-		if err != nil {
+		if _, err := fmt.Scan(&numStaff); err != nil {
 			return
 		}
 
@@ -47,12 +46,13 @@ func main() {
 				value     int
 			)
 
-			_, err := fmt.Scan(&operation, &value)
-			if err != nil {
+			if _, err := fmt.Scan(&operation, &value); err != nil {
 				return
 			}
+
 			minTemp, maxTemp = addTemp(operation, value, minTemp, maxTemp)
-			if maxTemp > minTemp {
+
+			if minTemp > maxTemp {
 				fmt.Println(-1)
 			} else {
 				fmt.Println(minTemp)
