@@ -44,15 +44,15 @@ func readInput() ([][]temperatureConstraint, error) {
 	}
 
 	departments := make([][]temperatureConstraint, departmentCount)
-	for departmentIndex := 0; departmentIndex < departmentCount; departmentIndex++ {
+	for departmentIndex := range departmentCount {
 		employeeCount, err := readAndCheckCount()
 		if err != nil {
 			return nil, err
 		}
 
 		departments[departmentIndex] = make([]temperatureConstraint, employeeCount)
-		for employeeIndex := 0; employeeIndex < employeeCount; employeeIndex++ {
-			constraint := temperatureConstraint{}
+		for employeeIndex := range employeeCount {
+			var constraint temperatureConstraint
 			if _, err := fmt.Scan(&constraint.operator, &constraint.temperature); err != nil {
 				return nil, fmt.Errorf("failed to scan temperature request: %w", err)
 			}
@@ -60,6 +60,7 @@ func readInput() ([][]temperatureConstraint, error) {
 			if constraint.operator != ">=" && constraint.operator != "<=" {
 				return nil, fmt.Errorf("%w: %q", errInvalidOperator, constraint.operator)
 			}
+
 			if constraint.temperature < minTemp || constraint.temperature > maxTemp {
 				return nil, fmt.Errorf("%w: must be between %d and %d", errInvalidTemp, minTemp, maxTemp)
 			}
@@ -101,6 +102,7 @@ func main() {
 	departments, err := readInput()
 	if err != nil {
 		fmt.Println(err)
+
 		return
 	}
 
