@@ -40,6 +40,10 @@ func ConvertCurrencies(source []CurrencyXML) ([]Currency, error) {
 	for _, currencyXML := range source {
 		currency, err := ConvertCurrency(currencyXML)
 		if err != nil {
+			if errors.Is(err, errMissingCurrencyFields) {
+				continue
+			}
+
 			return nil, fmt.Errorf("failed to convert currency: %w", err)
 		}
 
