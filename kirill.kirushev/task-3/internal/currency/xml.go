@@ -1,11 +1,11 @@
 package currency
 
 import (
-    "encoding/xml"
-    "fmt"
-    "os"
+	"encoding/xml"
+	"fmt"
+	"os"
 
-    "golang.org/x/net/html/charset"
+	"golang.org/x/net/html/charset"
 )
 
 type CurrencyXML struct {
@@ -19,20 +19,23 @@ type CurrencyRatesXML struct {
 }
 
 func LoadCurrencies(path string) (CurrencyRatesXML, error) {
-    file, err := os.Open(path)
-    if err != nil {
-        return CurrencyRatesXML{}, fmt.Errorf("failed to open XML file: %w", err)
-    }
-    defer file.Close()
+	file, err := os.Open(path)
+	if err != nil {
+		return CurrencyRatesXML{}, fmt.Errorf("failed to open XML file: %w", err)
+	}
 
-    decoder := xml.NewDecoder(file)
-    decoder.CharsetReader = charset.NewReaderLabel
+	defer func() {
+		_ = file.Close()
+	}()
 
-    var rates CurrencyRatesXML
+	decoder := xml.NewDecoder(file)
+	decoder.CharsetReader = charset.NewReaderLabel
 
-    if err := decoder.Decode(&rates); err != nil {
-        return CurrencyRatesXML{}, fmt.Errorf("failed to decode XML: %w", err)
-    }
+	var rates CurrencyRatesXML
 
-    return rates, nil
+	if err := decoder.Decode(&rates); err != nil {
+		return CurrencyRatesXML{}, fmt.Errorf("failed to decode XML: %w", err)
+	}
+
+	return rates, nil
 }

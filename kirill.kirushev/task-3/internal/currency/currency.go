@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+var errMissingCurrencyFields = errors.New("currency has missing required fields")
+
 type Currency struct {
 	NumCode  int     `json:"num_code"`
 	CharCode string  `json:"char_code"`
@@ -15,7 +17,7 @@ type Currency struct {
 
 func ConvertCurrency(currency CurrencyXML) (Currency, error) {
 	if currency.NumCode == 0 || currency.CharCode == "" || currency.Value == "" {
-		return Currency{}, errors.New("currency has missing required fields")
+		return Currency{}, errMissingCurrencyFields
 	}
 
 	value := strings.ReplaceAll(currency.Value, ",", ".")

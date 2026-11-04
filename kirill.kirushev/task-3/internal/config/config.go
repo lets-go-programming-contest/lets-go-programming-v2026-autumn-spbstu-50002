@@ -8,6 +8,8 @@ import (
 	"go.yaml.in/yaml/v3"
 )
 
+var errMissingConfigFields = errors.New("input-file and output-file are required")
+
 type Config struct {
 	InputFile  string `yaml:"input-file"`
 	OutputFile string `yaml:"output-file"`
@@ -26,7 +28,7 @@ func LoadConfig(path string) (Config, error) {
 	}
 
 	if config.InputFile == "" || config.OutputFile == "" {
-		return Config{}, errors.New("input-file and output-file are required")
+		return Config{}, errMissingConfigFields
 	}
 
 	return config, nil
