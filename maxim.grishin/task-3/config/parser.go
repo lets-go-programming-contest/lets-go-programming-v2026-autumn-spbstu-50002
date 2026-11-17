@@ -10,13 +10,13 @@ import (
 func Parse(path string) (*Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("YAML Parser could not read file: %s", err)
+		return nil, fmt.Errorf("yAML Parser could not read file: %w", err)
 	}
 
 	var config Config
-	err = yaml.Unmarshal(data, &config)
-	if err != nil {
-		return nil, fmt.Errorf("YAML Unmarshaling error: %s", err)
+
+	if err = yaml.Unmarshal(data, &config); err != nil {
+		return nil, fmt.Errorf("yAML Unmarshaling error: %w", err)
 	}
 
 	return &config, nil

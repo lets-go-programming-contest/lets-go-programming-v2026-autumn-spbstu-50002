@@ -14,11 +14,7 @@ func main() {
 
 	flag.Parse()
 
-	var (
-		projectConfig *config.Config
-		err           error
-	)
-	projectConfig, err = config.Parse(*configPath)
+	projectConfig, err := config.Parse(*configPath)
 	if err != nil {
 		panic(err)
 	}
@@ -26,19 +22,20 @@ func main() {
 	sourceFilePath := projectConfig.InputFile
 	resultFilePath := projectConfig.OutputFile
 	parser := currency.NewParser(sourceFilePath)
+
 	valCurs1, err := parser.Parse()
 	if err != nil {
 		panic(err)
 	}
 
 	currency.Sort(*valCurs1)
+
 	output, err := json.MarshalIndent(valCurs1.Valutes, "", "  ")
 	if err != nil {
 		panic(err)
 	}
 
-	err = writer.CreateWriteAll(resultFilePath, output)
-	if err != nil {
+	if err = writer.CreateWriteAll(resultFilePath, output); err != nil {
 		panic(err)
 	}
 }

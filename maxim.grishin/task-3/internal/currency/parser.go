@@ -28,9 +28,12 @@ func NewParser(path string) *Parser {
 func (parser *Parser) Parse() (*ValCurs, error) {
 	file, err := os.Open(parser.inputFilePath)
 	if err != nil {
-		return nil, fmt.Errorf("Could not open file: %s", err)
+		return nil, fmt.Errorf("could not open file: %w", err)
 	}
-	defer file.Close()
+
+	defer func() {
+		_ = file.Close()
+	}() //
 
 	decoder := xml.NewDecoder(file)
 
@@ -46,9 +49,9 @@ func (parser *Parser) Parse() (*ValCurs, error) {
 	}
 
 	var result ValCurs
-	err = decoder.Decode(&result)
-	if err != nil {
-		return nil, fmt.Errorf("Decoding error: %s", err)
+
+	if err = decoder.Decode(&result); err != nil {
+		return nil, fmt.Errorf("decoding error: %w", err)
 	}
 
 	return &result, nil

@@ -6,21 +6,20 @@ import (
 	"path/filepath"
 )
 
-var (
-	dirPerm  os.FileMode = 0o755
-	filePerm os.FileMode = 0o644
-)
-
 func CreateWriteAll(path string, data []byte) error {
+	var (
+		dirPerm  os.FileMode = 0o750
+		filePerm os.FileMode = 0o600
+	)
+
 	directory := filepath.Dir(path)
 
-	err := os.MkdirAll(directory, dirPerm)
-	if err != nil {
-		return fmt.Errorf("Could not create directories: %s", err)
+	if err := os.MkdirAll(directory, dirPerm); err != nil {
+		return fmt.Errorf("could not create directories: %w", err)
 	}
-	err = os.WriteFile(path, data, 0o644)
-	if err != nil {
-		return fmt.Errorf("Could not create file: %s", err)
+
+	if err := os.WriteFile(path, data, filePerm); err != nil {
+		return fmt.Errorf("could not create file: %w", err)
 	}
 
 	return nil

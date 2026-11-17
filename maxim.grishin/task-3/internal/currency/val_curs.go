@@ -3,9 +3,9 @@ package currency
 import "encoding/xml"
 
 type ValCurs struct {
-	XMLName xml.Name `xml:"ValCurs" json:"-"`
-	Date    string   `xml:"Date,attr" json:"-"`
-	Name    string   `xml:"name,attr" json:"-"`
+	XMLName xml.Name `json:"-" xml:"ValCurs"`
+	Date    string   `json:"-" xml:"Date,attr"`
+	Name    string   `json:"-" xml:"name,attr"`
 
 	Valutes []Valute `xml:"Valute"`
 }
