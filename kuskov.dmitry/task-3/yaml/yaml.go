@@ -2,6 +2,7 @@ package yaml
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
 	yamlv3 "go.yaml.in/yaml/v3"
@@ -17,15 +18,18 @@ type Config struct {
 func Load(path string) (Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return Config{}, err
+		return Config{}, fmt.Errorf("read %q: %w", path, err)
 	}
 
 	var cfg Config
+
 	if err := yamlv3.Unmarshal(data, &cfg); err != nil {
-		return Config{}, err
+		return Config{}, fmt.Errorf("unmarshal %q: %w", path, err)
 	}
+
 	if cfg.Input == "" || cfg.Output == "" {
 		return Config{}, errMissingFields
 	}
+
 	return cfg, nil
 }

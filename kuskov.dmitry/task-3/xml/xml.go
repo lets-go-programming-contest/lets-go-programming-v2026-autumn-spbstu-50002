@@ -2,15 +2,13 @@ package xml
 
 import (
 	encodingxml "encoding/xml"
-	"errors"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
 
 	"golang.org/x/net/html/charset"
 )
-
-var errMissingFields = errors.New("missing currency fields")
 
 type Currency struct {
 	NumCode  int     `json:"num_code"`
@@ -31,32 +29,36 @@ type rates struct {
 func Load(path string) ([]Currency, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("open %q: %w", path, err)
 	}
-	defer file.Close()
+
+	defer func() {
+		_ = file.Close()
+	}()
 
 	decoder := encodingxml.NewDecoder(file)
 	decoder.CharsetReader = charset.NewReaderLabel
 
 	var source rates
+
 	if err := decoder.Decode(&source); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("decode %q: %w", path, err)
 	}
 
 	currencies := make([]Currency, 0, len(source.Valutes))
+
 	for _, valute := range source.Valutes {
-		if valute.NumCode == 0 || valute.CharCode == "" || valute.Value == "" {
-			return nil, errMissingFields
-		}
 		value, err := strconv.ParseFloat(strings.ReplaceAll(valute.Value, ",", "."), 64)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("parse value %q: %w", valute.Value, err)
 		}
+
 		currencies = append(currencies, Currency{
 			NumCode:  valute.NumCode,
 			CharCode: valute.CharCode,
 			Value:    value,
 		})
 	}
+
 	return currencies, nil
 }

@@ -11,6 +11,11 @@ import (
 	"github.com/hjnhjnhjncf/task-2-1/yaml"
 )
 
+const (
+	dirPerm  = 0o700
+	filePerm = 0o600
+)
+
 func main() {
 	configPath := flag.String("config", "config.yaml", "path to configuration file")
 	flag.Parse()
@@ -26,8 +31,8 @@ func main() {
 
 	data, err := json.MarshalIndent(currencies, "", "    ")
 	must(err)
-	must(os.MkdirAll(filepath.Dir(cfg.Output), 0755))
-	must(os.WriteFile(cfg.Output, data, 0644))
+	must(os.MkdirAll(filepath.Dir(cfg.Output), dirPerm))
+	must(os.WriteFile(cfg.Output, data, filePerm))
 }
 
 func must(err error) {
