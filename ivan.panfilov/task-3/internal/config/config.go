@@ -1,10 +1,16 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
 	"gopkg.in/yaml.v3"
+)
+
+var (
+	ErrEmptyInputFile  = errors.New("input-file is empty")
+	ErrEmptyOutputFile = errors.New("output-file is empty")
 )
 
 type Config struct {
@@ -29,11 +35,11 @@ func Load(path string) (*Config, error) {
 	}
 
 	if cfg.InputFile == "" {
-		return nil, fmt.Errorf("input-file is empty")
+		return nil, ErrEmptyInputFile
 	}
 
 	if cfg.OutputFile == "" {
-		return nil, fmt.Errorf("output-file is empty")
+		return nil, ErrEmptyOutputFile
 	}
 
 	return &cfg, nil

@@ -11,6 +11,7 @@ func ByValueDesc(currencies []cbr.Currency) {
 		if currencies[i].Value == currencies[j].Value {
 			return currencies[i].NumCode < currencies[j].NumCode
 		}
+
 		return currencies[i].Value > currencies[j].Value
 	})
 }

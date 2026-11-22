@@ -9,10 +9,12 @@ import (
 	"github.com/Waffletsa1/task-3/internal/cbr"
 )
 
+const dirPermissions = 0o755
+
 func SaveJSON(path string, currencies []cbr.Currency) error {
 	dir := filepath.Dir(path)
 
-	if err := os.MkdirAll(dir, 0o755); err != nil {
+	if err := os.MkdirAll(dir, dirPermissions); err != nil {
 		return fmt.Errorf("failed to create output directory: %w", err)
 	}
 
